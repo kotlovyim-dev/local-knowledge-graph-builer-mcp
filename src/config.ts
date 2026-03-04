@@ -84,11 +84,12 @@ export async function loadConfig(configPath = 'lkgb.config.json'): Promise<Confi
     try {
         const fileContent = await fs.readFile(configPath, 'utf8');
         jsonConfig = JSON.parse(fileContent);
-    } catch (err: any) {
+    } catch (err: unknown) {
         // Ignore ENOENT (file not found) if it's the default config path,
         // we'll rely on env vars or defaults
-        if (err.code !== 'ENOENT') {
-            throw new Error(`Failed to parse config file ${configPath}: ${err.message}`);
+        if (err && typeof err === 'object' && 'code' in err && err.code !== 'ENOENT') {
+            const errorMsg = err instanceof Error ? err.message : String(err);
+            throw new Error(`Failed to parse config file ${configPath}: ${errorMsg}`, { cause: err });
         }
     }
 
