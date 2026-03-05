@@ -1,7 +1,7 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import matter from 'gray-matter';
-import { SourceAdapter, RawNode, RawLink, SourceConfig, WatchCallback } from './types.js';
+import { SourceAdapter, RawNode, RawLink, SourceConfig } from './types.js';
 
 export class MarkdownIndexer implements SourceAdapter {
     id = 'markdown';
@@ -67,7 +67,6 @@ export class MarkdownIndexer implements SourceAdapter {
         const content = parsed.content;
         const frontmatter = parsed.data || {};
         const title = frontmatter.title || path.basename(filePath, '.md');
-        const relativePath = path.relative(this.vaultPath!, filePath);
 
         const links = this.extractLinks(rawContent); // Use rawContent so we parse tags in frontmatter as well if needed, but better use content?
         const contentLinks = this.extractLinks(content);
