@@ -1,5 +1,7 @@
 import { SourceConfig } from '../config.js';
 
+export { SourceConfig };
+
 export type NodeType = 'note' | 'code_entity' | 'tag' | 'page';
 
 /**
